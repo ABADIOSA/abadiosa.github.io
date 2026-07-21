@@ -73,9 +73,11 @@ jobs:
           cp site/index.html site/404.html
           mkdir -p site/admin
           cp -r admin-src/dist/. site/admin/
-          cp site/admin/index.html site/admin/404.html
-          # هوية مستقلة لتطبيق الأدمن حتى يُثبَّت كتطبيق منفصل عن الإنتاج.
+          # هوية مستقلة لتطبيق الأدمن حتى يُثبَّت كتطبيق منفصل عن الإنتاج
+          # (اسم مختلف على الشاشة الرئيسية + لون ذهبي + عنوان مميّز).
           node -e "const fs=require('fs');const f='site/admin/manifest.webmanifest';const m=JSON.parse(fs.readFileSync(f,'utf8'));m.name='ABADIOSA · Admin';m.short_name='ABADIOSA Admin';m.theme_color='#c9a45c';fs.writeFileSync(f,JSON.stringify(m,null,2));"
+          node -e "const fs=require('fs');const f='site/admin/index.html';let h=fs.readFileSync(f,'utf8');h=h.replace(/(apple-mobile-web-app-title\" content=\")[^\"]*/,'\$1ABADIOSA Admin').replace(/<title>[^<]*<\/title>/,'<title>ABADIOSA · Admin</title>');fs.writeFileSync(f,h);"
+          cp site/admin/index.html site/admin/404.html
           touch site/.nojekyll
 
       - name: النشر إلى فرع main (يُقدَّم عبر GitHub Pages)
