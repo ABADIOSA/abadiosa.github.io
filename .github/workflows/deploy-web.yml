@@ -1,8 +1,14 @@
-name: بناء ونشر نسخة الويب
+name: بناء ونشر الويب (إنتاج + أدمن)
+
+# قناتان من نفس موقع GitHub Pages:
+#   الجذر  /        = الإنتاج (العائلة والأصحاب) ويُبنى من فرع stable
+#   /admin/         = قناة الأدمن (تجريبية) ويُبنى من فرع source
+# وظيفة واحدة تبني القناتين وتدفع الشجرة كاملة إلى فرع main، فلا يوجد تسابق
+# على الكتابة ولا تُمحى إحدى القناتين الأخرى.
 
 on:
   push:
-    branches: [source]
+    branches: [source, stable]
   workflow_dispatch: {}
 
 permissions:
@@ -15,9 +21,19 @@ concurrency:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - name: سحب فرع الإنتاج (stable)
+        uses: actions/checkout@v4
+        with:
+          ref: stable
+          path: prod-src
+
+      - name: سحب فرع الأدمن (source)
+        uses: actions/checkout@v4
+        with:
+          ref: source
+          path: admin-src
 
       - uses: actions/setup-node@v4
         with:
@@ -29,27 +45,47 @@ jobs:
           corepack enable
           corepack prepare pnpm@11.9.0 --activate
 
-      - name: تثبيت الاعتماديات
+      - name: بناء الإنتاج (الجذر)
+        working-directory: prod-src
         run: |
           pnpm install --frozen-lockfile
           pnpm rebuild esbuild
+          pnpm run build
+        env:
+          HARBOR_WEB_BASE: /
+          HARBOR_CHANNEL: stable
 
-      - name: بناء نسخة الويب
-        run: pnpm run build
-
-      - name: تجهيز ملفات الموقع
+      - name: بناء الأدمن (/admin/)
+        working-directory: admin-src
         run: |
-          cp dist/index.html dist/404.html
-          touch dist/.nojekyll
+          pnpm install --frozen-lockfile
+          pnpm rebuild esbuild
+          pnpm run build
+        env:
+          HARBOR_WEB_BASE: /admin/
+          HARBOR_CHANNEL: beta
 
-      - name: النشر إلى فرع main (يُقدَّم تلقائيًا عبر GitHub Pages)
+      - name: تجميع الموقع
         run: |
-          cd dist
+          rm -rf site
+          mkdir -p site
+          cp -r prod-src/dist/. site/
+          cp site/index.html site/404.html
+          mkdir -p site/admin
+          cp -r admin-src/dist/. site/admin/
+          cp site/admin/index.html site/admin/404.html
+          # هوية مستقلة لتطبيق الأدمن حتى يُثبَّت كتطبيق منفصل عن الإنتاج.
+          node -e "const fs=require('fs');const f='site/admin/manifest.webmanifest';const m=JSON.parse(fs.readFileSync(f,'utf8'));m.name='ABADIOSA · Admin';m.short_name='ABADIOSA Admin';m.theme_color='#c9a45c';fs.writeFileSync(f,JSON.stringify(m,null,2));"
+          touch site/.nojekyll
+
+      - name: النشر إلى فرع main (يُقدَّم عبر GitHub Pages)
+        run: |
+          cd site
           git init -b main
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "نشر نسخة الويب من ${GITHUB_SHA}"
+          git commit -m "نشر: إنتاج (stable) + أدمن (source) من ${GITHUB_SHA}"
           git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

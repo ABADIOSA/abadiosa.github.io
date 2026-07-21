@@ -1,0 +1,34 @@
+name: ترقية الأدمن إلى الإنتاج (promote)
+
+# زر يدوي: يجعل فرع الإنتاج stable مطابقًا لفرع الأدمن source. شغّله من تبويب
+# Actions بعد ما تتأكد أن نسخة /admin/ تعمل كما تريد، فتصل نفس النسخة إلى
+# العائلة والأصحاب على الجذر. دفع stable يُشغّل deploy-web.yml تلقائيًا.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: promote
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: سحب المستودع كاملًا
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: تحديث stable ليطابق source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin source stable || git fetch origin source
+          echo "source = $(git rev-parse origin/source)"
+          # اجعل stable يشير إلى نفس محتوى source ثم ادفعه.
+          git push origin origin/source:refs/heads/stable
+          echo "تمت الترقية: stable الآن = source"
