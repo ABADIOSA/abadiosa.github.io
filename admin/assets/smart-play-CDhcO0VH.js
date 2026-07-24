@@ -1,0 +1,1 @@
+import{v as e}from"./auth-C4ACiLSQ.js";function t(t){if(t.type!==`series`)return;let n=e(t.id);return n?{season:n.season,episode:n.episode}:{season:1,episode:1}}export{t};

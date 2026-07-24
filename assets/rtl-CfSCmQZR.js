@@ -1,0 +1,1 @@
+var e=/[؀-ۿݐ-ݿࢠ-ࣿﭐ-﷿ﹰ-﻿]/,t=/[ً-ْٰـ]/g;function n(t){return e.test(t)}function r(e){return e.replace(t,``).replace(/[أإآٱ]/g,`ا`).replace(/ة/g,`ه`).replace(/ى/g,`ي`).replace(/ؤ/g,`و`).replace(/ئ/g,`ي`).toLowerCase().trim()}function i(e,t){return e.toLowerCase().includes(t)?!0:!n(e)&&!n(t)?!1:r(e).includes(r(t))}export{n,r,i as t};

@@ -1,0 +1,1 @@
+var e=`/admin/assets/abadiosa-mark-CjJ6DlZG.png`;export{e as t};

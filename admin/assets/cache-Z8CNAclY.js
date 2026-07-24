@@ -1,0 +1,1 @@
+function e(e,t,n,r){for(e.has(t)&&e.delete(t),e.set(t,n);e.size>r;){let t=e.keys().next();if(t.done)break;e.delete(t.value)}}function t(e,t){let n=e.get(t);if(n!==void 0)return e.delete(t),e.set(t,n),n}export{e as n,t};

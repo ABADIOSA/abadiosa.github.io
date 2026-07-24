@@ -1,0 +1,21 @@
+{
+  "name": "ABADIOSA · Admin",
+  "short_name": "ABADIOSA Admin",
+  "description": "منصة ABADIOSA — أفلام ومسلسلات بلا حدود",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0d1512",
+  "theme_color": "#c9a45c",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "200x200",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

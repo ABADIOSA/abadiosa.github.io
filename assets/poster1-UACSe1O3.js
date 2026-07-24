@@ -1,0 +1,1 @@
+var e=`/assets/poster1-Wltjix03.webp`;export{e as t};

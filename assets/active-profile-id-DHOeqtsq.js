@@ -1,0 +1,1 @@
+function e(){try{let e=localStorage.getItem(`harbor.profiles.v1`);return e?JSON.parse(e):null}catch{return null}}function t(){return e()?.activeId||`default`}function n(){let t=e();return!t||!Array.isArray(t.profiles)||t.profiles.length===0?!0:t.profiles.find(e=>e.id===t.activeId)?.isPrimary===!0}export{n,t};

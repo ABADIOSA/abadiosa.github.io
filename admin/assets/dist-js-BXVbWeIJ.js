@@ -1,0 +1,1 @@
+import{o as e}from"./core-CBaU_ejF.js";async function t(){await e(`plugin:process|restart`)}export{t as relaunch};

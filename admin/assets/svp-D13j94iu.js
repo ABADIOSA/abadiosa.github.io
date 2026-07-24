@@ -1,0 +1,1 @@
+import{o as e}from"./core-CBaU_ejF.js";async function t(){return e(`svp_status`)}async function n(){await e(`svp_launch`)}async function r(){return e(`svp_ensure_running`)}async function i(t){return e(`svp_apply`,{targetFps:t})}export{t as i,r as n,n as r,i as t};

@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-fBfwind-.js";import{a as t,i as n,n as r,r as i}from"./player-panel-BeSfIO5Y.js";var a=e();function o(){return(0,a.jsxs)(a.Fragment,{children:[(0,a.jsx)(t,{}),(0,a.jsx)(n,{}),(0,a.jsx)(r,{}),(0,a.jsx)(i,{})]})}export{o as P2PPanel};

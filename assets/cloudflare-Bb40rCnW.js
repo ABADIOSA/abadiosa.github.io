@@ -1,0 +1,1 @@
+var e=`/assets/cloudflare-DDAh8Ju7.webp`;export{e as t};

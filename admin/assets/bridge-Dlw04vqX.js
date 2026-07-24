@@ -1,0 +1,1 @@
+import{r as e}from"./react-B8IZ02wI.js";import{o as t}from"./core-CBaU_ejF.js";import"./platform-DAxE-1CE.js";var n=e({MAX_SLOTS:()=>4,mvStopAll:()=>r});async function r(){await t(`multiview_stop_all`)}export{n as t};

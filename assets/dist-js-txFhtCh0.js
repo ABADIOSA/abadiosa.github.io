@@ -1,0 +1,1 @@
+import{r as e}from"./react-B8IZ02wI.js";import{o as t}from"./core-CBaU_ejF.js";var n=e({openUrl:()=>r,revealItemInDir:()=>i});async function r(e,n){await t(`plugin:opener|open_url`,{url:e,with:n})}async function i(e){return t(`plugin:opener|reveal_item_in_dir`,{paths:typeof e==`string`?[e]:e})}export{r as n,i as r,n as t};

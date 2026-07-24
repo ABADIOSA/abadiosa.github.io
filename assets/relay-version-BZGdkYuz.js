@@ -1,0 +1,1 @@
+var e=`wss://pub.harbor.site`;function t(e){return e==null||e<10}function n(e){return e.trim().toLowerCase().replace(/^(wss?|https?):\/\//,``).replace(/\/.*$/,``)===`pub.harbor.site`}export{n,t as r,e as t};
